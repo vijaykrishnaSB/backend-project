@@ -6,12 +6,12 @@ dotenv.config();
 
 const app = express();
 
-const PORT = 4000;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 
 // const MONGO_URL = "mongodb://localhost";
-const MONGO_URL = (process.env.MONGO_URL);
+const MONGO_URL = process.env.MONGO_URL;
 
 async function createConnection() {
   const client = new MongoClient(MONGO_URL);
@@ -32,13 +32,13 @@ app.get("/reports", async function (request, response) {
     .collection("reports")
     .find({})
     .toArray();
-  console.log("Reports: " + reports);
+  // console.log("Reports: " + reports);
   response.send(reports);
 });
 
 app.post("/reports", async function (request, response) {
   const data = request.body;
-  console.log(data);
+  // console.log(data);
   const result = await client
     .db("Trust-project")
     .collection("reports")
