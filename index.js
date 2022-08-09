@@ -1,13 +1,15 @@
 import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import { reportsRouter } from "./reports.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
-
 const PORT = process.env.PORT;
 
+app.use(cors());
 app.use(express.json());
 
 // const MONGO_URL = "mongodb://localhost";
@@ -20,30 +22,12 @@ async function createConnection() {
   return client;
 }
 
-const client = await createConnection();
+export const client = await createConnection();
 
 app.get("/", function (request, response) {
   response.send(" Hi This Is My Trust-project");
 });
 
-app.get("/reports", async function (request, response) {
-  const reports = await client
-    .db("Trust-project")
-    .collection("reports")
-    .find({})
-    .toArray();
-  // console.log("Reports: " + reports);
-  response.send(reports);
-});
-
-app.post("/reports", async function (request, response) {
-  const data = request.body;
-  // console.log(data);
-  const result = await client
-    .db("Trust-project")
-    .collection("reports")
-    .insertMany(data);
-  response.send(result);
-});
+app.use("/reports", reportsRouter);
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
