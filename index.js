@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import { reportsRouter } from "./reports.js";
+import { usersRouter } from "./users.js";
 import cors from "cors";
 
 dotenv.config();
@@ -29,5 +30,6 @@ app.get("/", function (request, response) {
 });
 
 app.use("/reports", reportsRouter);
+app.use("/users", usersRouter);
 
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
