@@ -1,7 +1,7 @@
 import express from "express";
-import { client } from "./index.js";
 import bcrypt from "bcrypt";
-
+import { createUser, getUserByName } from "./function.js";
+import jwt from "jsonwebtoken";
 const router = express.Router();
 
 async function genHashedPassword(password) {
@@ -10,18 +10,6 @@ async function genHashedPassword(password) {
   const hashedPassword = await bcrypt.hash(password, salt);
   return hashedPassword;
 }
-
-
-async function getUserByName(username) {
-    return await client 
-    .db("Trust-project")
-    .collection("users")
-    .insertOne({
-      username: username,
-    });
-}
-
-
 
 router.post("/signup", async function (req, res) {
   const { username, password } = req.body;
@@ -34,14 +22,34 @@ router.post("/signup", async function (req, res) {
     const hashedPassword = await genHashedPassword(password);
     console.log(hashedPassword);
 
-    const result = await client
-      .db("Trust-project")
-      .collection("users")
-      .insertOne({
-        username: username,
-        password: hashedPassword,
-      });
-        res.send(result);
+    const result = await createUser({
+      username: username,
+      password: hashedPassword,
+    });
+    res.send(result);
+  }
+});
+
+router.post("/login", async function (req, res) {
+  const { username, password } = req.body;
+
+  const userFromDB = await getUserByName(username);
+  console.log(userFromDB);
+
+
+  if (!userFromDB) {
+    res.status(401).send({ message: "Invalid credentials" });
+  } else {
+    const storedPassword = userFromDB.password;
+    const isPasswordMatch = await bcrypt.compare(password, storedPassword);
+    console.log(isPasswordMatch);
+
+    if (isPasswordMatch) {
+      const token = jwt.sign({id:userFromDB._id}, process.env.SECRET_KEY);
+      res.send({ message: "Successfully login", token: token});
+    } else {
+      res.status(401).send({ message: "Invalid credentials" });
+    }
   }
 });
 
