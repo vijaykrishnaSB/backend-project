@@ -12,18 +12,18 @@ async function genHashedPassword(password) {
 }
 
 router.post("/signup", async function (req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const userFromDB = await getUserByName(username);
+  const userFromDB = await getUserByName(email);
 
   if (userFromDB) {
-    res.status(400).send({ message: "username already exists" });
+    res.status(400).send({ message: "email already exists" });
   } else {
     const hashedPassword = await genHashedPassword(password);
     console.log(hashedPassword);
 
     const result = await createUser({
-      username: username,
+      email: email,
       password: hashedPassword,
     });
     res.send(result);
@@ -31,9 +31,9 @@ router.post("/signup", async function (req, res) {
 });
 
 router.post("/login", async function (req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const userFromDB = await getUserByName(username);
+  const userFromDB = await getUserByName(email);
   console.log(userFromDB);
 
   if (!userFromDB) {
