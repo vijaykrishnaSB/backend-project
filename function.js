@@ -11,3 +11,6 @@ export async function getUserByName(email) {
     .findOne({ email: email });
 }
 
+export async function createReport(data) {
+  return await client.db("Trust-project").collection("reports").insertOne(data);
+}

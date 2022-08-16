@@ -2,20 +2,21 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import { usersRouter } from "./users.js";
+import { reportRouter } from "./report.js";
 import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT;
-
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
+app.use(cors());
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//     credentials: true,
+//   })
+// );
 app.use(express.json());
 
 const MONGO_URL = process.env.MONGO_URL;
@@ -34,4 +35,5 @@ app.get("/", function (request, response) {
 });
 
 app.use("/users", usersRouter);
+app.use("/reports", reportRouter);
 app.listen(PORT, () => console.log(`App started in ${PORT}`));
