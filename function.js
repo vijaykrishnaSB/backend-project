@@ -10,3 +10,4 @@ export async function getUserByName(email) {
     .collection("users")
     .findOne({ email: email });
 }
+
