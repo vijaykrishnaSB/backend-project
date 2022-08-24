@@ -43,12 +43,12 @@ router.post("/login", async function (req, res) {
     const isPasswordMatch = await bcrypt.compare(password, storedPassword);
     console.log(isPasswordMatch);
 
-    if (isPasswordMatch) {
-      const token = jwt.sign({ id: userFromDB._id }, process.env.SECRET_KEY);
-      res.send({ message: "Successfully login", token: token });
-    } else {
-      res.status(401).send({ message: "Invalid credentials" });
-    }
+    // if (isPasswordMatch) {
+    //   const token = jwt.sign({ id: userFromDB._id }, process.env.SECRET_KEY);
+    //   res.send({ message: "Successfully login", token: token });
+    // } else {
+    //   res.status(401).send({ message: "Invalid credentials" });
+    // }
   }
 });
 
