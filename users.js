@@ -12,7 +12,7 @@ async function genHashedPassword(password) {
 }
 
 router.post("/signup", async function (req, res) {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   const userFromDB = await getUserByName(email);
 
@@ -23,6 +23,7 @@ router.post("/signup", async function (req, res) {
     console.log(hashedPassword);
 
     const result = await createUser({
+      name: name,
       email: email,
       password: hashedPassword,
     });
@@ -43,12 +44,12 @@ router.post("/login", async function (req, res) {
     const isPasswordMatch = await bcrypt.compare(password, storedPassword);
     console.log(isPasswordMatch);
 
-    // if (isPasswordMatch) {
-    //   const token = jwt.sign({ id: userFromDB._id }, process.env.SECRET_KEY);
-    //   res.send({ message: "Successfully login", token: token });
-    // } else {
-    //   res.status(401).send({ message: "Invalid credentials" });
-    // }
+    if (isPasswordMatch) {
+      const token = jwt.sign({ id: userFromDB._id }, process.env.SECRET_KEY);
+      res.send({ message: "Successfully login", token: token });
+    } else {
+      res.status(401).send({ message: "Invalid credentials" });
+    }
   }
 });
 
