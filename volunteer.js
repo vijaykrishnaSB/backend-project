@@ -3,14 +3,14 @@ import { client } from "./index.js";
 import { createVolunteer } from "./function.js";
 const router = express.Router();
 
-router.get("/volunteer", async function (req, res) {
-  const volunteer = await client
-    .db("Trust-project")
-    .collection("volunteer")
-    .find({})
-    .toArray();
-  res.send(volunteer);
-});
+// router.get("/volunteer", async function (req, res) {
+//   const volunteer = await client
+//     .db("Trust-project")
+//     .collection("volunteer")
+//     .find({})
+//     .toArray();
+//   res.send(volunteer);
+// });
 router.post("/posting", async function (req, res) {
   const { name, email, number, city, state, pincode } = req.body;
   const results = await createVolunteer({
