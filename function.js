@@ -21,16 +21,3 @@ export async function createVolunteer(data) {
     .collection("volunteer")
     .insertOne(data);
 }
-
-// export async function updateVolunteer(data){
-//   return await client
-//   .db("Trust-project")
-//   .collection("volunteer")
-//   .updateOne({ id: req.params.id }, { $set: req.body });
-// }
-// export async function getVolunteerById(data){
-//   return await client
-//   .db("Trust-project")
-//   .collection("volunteer")
-//   .findOne({ id: req.params.id });
-// }

@@ -25,10 +25,7 @@ router.get("/posting/:id", async function (req, res) {
     .findOne({ id: req.params.id });
   res.send(reports);
 });
-// router.get("/posting/:id", async function (req, res) {
-//   const reports = await getVolunteerById(req.params.id);
-//   res.send(reports);
-// });
+
 router.put("/posting/:id", async function (req, res) {
   const reports = await client
     .db("Trust-project")
@@ -36,9 +33,5 @@ router.put("/posting/:id", async function (req, res) {
     .updateOne({ id: req.params.id }, { $set: req.body });
   res.send(reports);
 });
-// router.put("/posting/:id", async function (req, res) {
-//   const reports = await updateVolunteer(req.params.id);
-//   res.send(reports);
-// });
 
 export const volunteerRouter = router;
