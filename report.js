@@ -11,29 +11,10 @@ router.get("/", async function (req, res) {
     .toArray();
   res.send(reports);
 });
+
 router.post("/report", async function (req, res) {
-  const {
-    name,
-    emailid,
-    mobilenumber,
-    date,
-    address,
-    district,
-    state,
-    pincode,
-    reasonofreporting,
-  } = req.body;
-  const result = await createReport({
-    name: name,
-    emailid: emailid,
-    mobilenumber: mobilenumber,
-    date: date,
-    address: address,
-    district: district,
-    state: state,
-    pincode: pincode,
-    reasonofreporting: reasonofreporting,
-  });
+  const result = await createReport(req.body);
   res.send(result);
 });
+
 export const reportRouter = router;
